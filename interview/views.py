@@ -4,7 +4,7 @@ from django.shortcuts import render, reverse
 from requests.exceptions import RequestException
 
 from interview.config import REMOTE_BASE_URL, LOGIN_PATH, TIME_OUT, HTTP_201_CREATED, REQUEST_PROCESSING_ERROR, HTTP_400_BAD_REQUEST,\
-    INVALID_LOGIN_CREDENTIALS_ERROR, EVALUATIONS_PATH, HTTP_200_OK
+    INVALID_LOGIN_CREDENTIALS_ERROR, EVALUATIONS_PATH, HTTP_200_OK, HTTP_404_NOT_FOUND
 from .forms import LoginForm
 
 
@@ -45,7 +45,7 @@ def login(request):
                     token = response_data['token']
                     request.session['interview'] = {"token": token}
                     print(token)
-                    HttpResponseRedirect(reverse("interview:list"))
+                    return HttpResponseRedirect(reverse("interview:list"))
 
                 else:
                     # Handle other HTTP response codes
@@ -69,8 +69,9 @@ def login(request):
 def list(request):
 
     token = "Token "+str(request.session["interview"]["token"])
-    headers = {"Content-Type": "application/json", "Accept": "application/json", "Authorization": token}
+    headers = {"Accept": "application/json", "Authorization": token}
     url = "{}{}".format(REMOTE_BASE_URL, EVALUATIONS_PATH)
+    error = ""
 
     try:
         response = requests.get(url, headers=headers, timeout=TIME_OUT)
@@ -78,18 +79,47 @@ def list(request):
 
         if status_code == HTTP_200_OK:
             response_data = response.json()
-            return render(request, "interview/list.html", {"records": response_data})
+
+            return render(request, "interview/list.html", {"records": response_data, "no_records":"No records found"})
             # display result
         else:
-            # render error processing page
+            error = REQUEST_PROCESSING_ERROR
             print(response.text)
-
 
     except RequestException as e:
         print("{}: {}".format(REQUEST_PROCESSING_ERROR, str(e)))
         error = REQUEST_PROCESSING_ERROR
 
     return render(request, "interview/processing_error.html", {"error": error})
+
+
+def retrieve(request, id):
+    token = "Token " + str(request.session["interview"]["token"])
+    headers = {"Accept": "application/json"}
+    data = {"id": id}
+    url ="{}{}{}".format(REMOTE_BASE_URL, EVALUATIONS_PATH, id)
+
+    try:
+        response = requests.get(url, headers=headers, params=data, timeout=TIME_OUT)
+        status_code = response.status_code
+
+        if status_code == HTTP_200_OK:
+            response_data = response.json()
+            print(response_data)
+
+            return render(request, "interview/evaluation.html", {})
+
+        elif status_code == HTTP_404_NOT_FOUND:
+
+            print(response.text)
+            # find out how to dipaly 404 not found
+            #return render(request, )
+
+
+
+
+    except:
+        pass
 
 
 

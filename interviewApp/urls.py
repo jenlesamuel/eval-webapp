@@ -19,7 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^api/', include('interviewApi.urls')),
     url(r'^', include('interview.urls')),
-    url(r'api/auth/', include('knox.urls')),
-    url(r'^auth/', include('timed_auth_token.urls', namespace='auth')),
+    url(r'api-knox/auth/', include('knox.urls')),
+    url(r'^api/auth/', include('timed_auth_token.urls', namespace='auth')),
     url(r'^admin/', admin.site.urls),
 ]

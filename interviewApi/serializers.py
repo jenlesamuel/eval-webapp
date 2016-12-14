@@ -35,9 +35,10 @@ class EvaluationSerializer(serializers.Serializer):
     educational_background = serializers.IntegerField()
     leadership = serializers.IntegerField()
     comments = serializers.CharField(max_length=300)
+    total = serializers.IntegerField()
 
     def create(self, validated_data):
-        remote_id = validated_data['remote_id']
+        '''remote_id = validated_data['remote_id']
         candidate_name = validated_data['candidate_name']
         job_title = validated_data['job_title']
         interviewer_name = validated_data['interviewer_name']
@@ -50,14 +51,13 @@ class EvaluationSerializer(serializers.Serializer):
         educational_background = validated_data['educational_background']
         leadership = validated_data['leadership']
         comments = validated_data['comments']
-        total = int(communication) + int(problem_solving) + int(conflict_resolution) + int(teamwork) + \
-                int(work_experience) + int(educational_background)+ int(leadership)
+        total = validated_data['total'] '''
 
-        validated_data.update({"total": total})
         return Evaluation.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        instance.remote_id = validated_data.get('remote_id', instance.remote_id)
+        pass
+        '''instance.remote_id = validated_data.get('remote_id', instance.remote_id)
         instance.candidate_name = validated_data.get('candidate_name', instance.candidate_name)
         instance.job_title = validated_data.get('job_title', instance.job_title)
         instance.interviewer_name = validated_data.get('interviewer_name', instance.interviewer_name)
@@ -72,5 +72,6 @@ class EvaluationSerializer(serializers.Serializer):
         instance.comments = validated_data.get('candidate_name', instance.comments)
 
         instance.save()
-        return instance
+        return instance'''
+
 

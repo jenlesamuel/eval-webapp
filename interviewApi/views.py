@@ -10,6 +10,7 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from .models import Evaluation
 from .libs import get_all_evaluation
+import pdb
 
 
 '''class LoginUser(generics.GenericAPIView):
@@ -53,11 +54,8 @@ class ListCreateEvaluation(generics.GenericAPIView):
         return Response(synced_records, status=status.HTTP_201_CREATED)
 
     def get(self, request):
-        permission_classes= (IsAuthenticated, )
-        authentication_classes = (TimedAuthTokenAuthentication,)
-        serializer_class = EvaluationSerializer
 
-        serializer = self.get_serializer(self.get_queryset, many=True)
+        serializer = EvaluationSerializer(self.get_queryset(), many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def get_queryset(self):
