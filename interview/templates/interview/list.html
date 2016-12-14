@@ -1,0 +1,11 @@
+{% extends "interview/base.html"%}
+
+{% block title %}Evaluation Records{% endblock title %}
+
+{% block content %}
+    {% if records %}
+        {% for record in records %}
+            <div>{{ record }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock content %}

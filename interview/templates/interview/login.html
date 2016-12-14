@@ -1,0 +1,29 @@
+{% extends 'interview/base.html' %}
+
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+
+    {{ error }}
+    <form method="POST" action="{% url 'interview:login' %}">
+        {% csrf_token %}
+
+        {{ form.email }}
+
+        {% if form.errors.email %}
+            {% for error in form.errors.email %}
+                {{ error }}
+            {% endfor %}
+        {% endif %}
+
+        {{ form.password }}
+
+        {% if form.errors.password %}
+            {% for error in form.errors.password %}
+                {{ error }}
+            {% endfor %}
+        {% endif %}
+
+        <input type="submit" value="Login" />
+    </form>
+{% endblock content %}
