@@ -2,10 +2,10 @@ import requests
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, reverse
 from requests.exceptions import RequestException
-
 from interview.config import REMOTE_BASE_URL, LOGIN_PATH, TIME_OUT, HTTP_201_CREATED, REQUEST_PROCESSING_ERROR, HTTP_400_BAD_REQUEST,\
-    INVALID_LOGIN_CREDENTIALS_ERROR, EVALUATIONS_PATH, HTTP_200_OK, HTTP_404_NOT_FOUND
+    INVALID_LOGIN_CREDENTIALS_ERROR, EVALUATIONS_PATH, HTTP_200_OK, HTTP_404_NOT_FOUND, RESOURCE_NOT_FOUND
 from .forms import LoginForm
+from .libs import is_logged_in
 
 
 # Create your views here.
@@ -16,6 +16,7 @@ def index(request):
 
 
 def login(request):
+
     error = ""
 
     if request.method == 'POST':
@@ -45,7 +46,7 @@ def login(request):
                     token = response_data['token']
                     request.session['interview'] = {"token": token}
                     print(token)
-                    return HttpResponseRedirect(reverse("interview:list"))
+                    return HttpResponseRedirect(reverse("interview:index"))
 
                 else:
                     # Handle other HTTP response codes
@@ -66,7 +67,10 @@ def login(request):
     return render(request, 'interview/login.html', {'form': login_form, "error": error})
 
 
-def list(request):
+def index(request):
+
+    if not is_logged_in(request):
+        return HttpResponseRedirect(reverse("interview:login"))
 
     token = "Token "+str(request.session["interview"]["token"])
     headers = {"Accept": "application/json", "Authorization": token}
@@ -94,10 +98,15 @@ def list(request):
 
 
 def retrieve(request, id):
+
+    if not is_logged_in(request):
+        return HttpResponseRedirect(reverse("interview:login"))
+
     token = "Token " + str(request.session["interview"]["token"])
-    headers = {"Accept": "application/json"}
+    headers = {"Accept": "application/json", "Authorization": token}
     data = {"id": id}
     url ="{}{}{}".format(REMOTE_BASE_URL, EVALUATIONS_PATH, id)
+    error = ""
 
     try:
         response = requests.get(url, headers=headers, params=data, timeout=TIME_OUT)
@@ -107,19 +116,29 @@ def retrieve(request, id):
             response_data = response.json()
             print(response_data)
 
-            return render(request, "interview/evaluation.html", {})
+            return render(request, "interview/evaluation.html", {"record": response_data})
 
         elif status_code == HTTP_404_NOT_FOUND:
 
             print(response.text)
+            error = RESOURCE_NOT_FOUND
             # find out how to dipaly 404 not found
             #return render(request, )
 
+        else:
+
+            print(response.text)
+            error = REQUEST_PROCESSING_ERROR
+
+    except RequestException as e:
+
+        print("{}: {}".format(REQUEST_PROCESSING_ERROR, str(e)))
+        error = REQUEST_PROCESSING_ERROR
+
+    return render(request, "interview/processing_error.html", {"error": error})
 
 
 
-    except:
-        pass
 
 
 
