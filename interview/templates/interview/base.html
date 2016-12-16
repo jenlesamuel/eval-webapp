@@ -3,8 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock title %}</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "interviewApp/css/bootstrap.min.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "interviewApp/css/custom.css" %}"/>
 </head>
+
 <body>
-    {% block content %}{% endblock content %}
+
+
+
+	<div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="{% url 'interview:index' %}" class="navbar-brand">Eval</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="{% url 'interview:index' %}">All Evaluations</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" style="margin-top: 100px">{% block content %}{% endblock content %}</div>
 </body>
 </html>

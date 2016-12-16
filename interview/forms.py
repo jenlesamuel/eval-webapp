@@ -6,6 +6,6 @@ class LoginForm(forms.ModelForm):
         model = User
         fields = ['email', 'password']
         widgets = {
-            'email':forms.EmailInput(attrs={'placeholder' : 'Email'}),
-            'password':forms.PasswordInput(attrs={'placeholder' : 'Password'})
+            'email':forms.EmailInput(attrs={'placeholder': 'Email', 'class': 'form-control'}),
+            'password':forms.PasswordInput(attrs={'placeholder' : 'Password', 'class': 'form-control'})
         }

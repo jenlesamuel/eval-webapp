@@ -25,7 +25,7 @@ SECRET_KEY = '9fn4qjtl-6@p@e!*@y3fkw=!-hzwn9cjhf)3=0ahp%xkzo=p6c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["eval-webapp.herokuapp.com", "localhost:5000"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
