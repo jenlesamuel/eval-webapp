@@ -25,7 +25,7 @@ SECRET_KEY = '9fn4qjtl-6@p@e!*@y3fkw=!-hzwn9cjhf)3=0ahp%xkzo=p6c'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["eval-webapp.herokuapp.com", "localhost:5000"]
 
 
 # Application definition
@@ -128,6 +128,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 from datetime import timedelta
@@ -135,3 +138,14 @@ from datetime import timedelta
 TIMED_AUTH_TOKEN = {
     'DEFAULT_VALIDITY_DURATION': timedelta(days=45)
 }
+
+# Update database configuration with $DATABASE_URL.
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+
+#Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

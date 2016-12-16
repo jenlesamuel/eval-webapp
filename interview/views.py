@@ -10,11 +10,6 @@ from .libs import is_logged_in
 
 # Create your views here.
 
-
-def index(request):
-    pass
-
-
 def login(request):
 
     error = ""
@@ -84,7 +79,7 @@ def index(request):
         if status_code == HTTP_200_OK:
             response_data = response.json()
 
-            return render(request, "interview/list.html", {"records": response_data, "no_records":"No records found"})
+            return render(request, "interview/list.html", {"records": response_data, "no_records": "No records found"})
             # display result
         else:
             error = REQUEST_PROCESSING_ERROR
@@ -122,8 +117,6 @@ def retrieve(request, id):
 
             print(response.text)
             error = RESOURCE_NOT_FOUND
-            # find out how to dipaly 404 not found
-            #return render(request, )
 
         else:
 
