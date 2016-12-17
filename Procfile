@@ -1,0 +1,1 @@
+web: gunicorn interviewApp.wsgi --log-file -

@@ -1,0 +1,13 @@
+.make-bold{
+    font-weight: bold;
+}
+
+.data-key {
+    font-size:18px;
+    font-weight:bold;
+}
+
+.data-value{
+    font-size: 18px;
+    margin-left:10px;
+}
