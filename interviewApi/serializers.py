@@ -22,6 +22,7 @@ class UserSerializer(serializers.Serializer):
 
 
 class EvaluationSerializer(serializers.Serializer):
+    id= serializers.ReadOnlyField()
     remote_id = serializers.IntegerField()
     candidate_name = serializers.CharField(max_length=20)
     job_title = serializers.CharField(max_length=20)

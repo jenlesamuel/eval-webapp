@@ -1,4 +1,4 @@
-REMOTE_BASE_URL = "https://eval-webapp.herokuapp.com/"
+REMOTE_BASE_URL = "http://localhost:8000/"
 LOGIN_PATH = "api/auth/login/"
 EVALUATIONS_PATH = "api/evaluations/"
 

@@ -13,26 +13,6 @@ from .libs import get_all_evaluation
 import pdb
 
 
-'''class LoginUser(generics.GenericAPIView):
-    serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, )
-    authentication_classes = (BasicAuthentication,)
-
-    def post(self, request):
-
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        email = serializer.validated_data['email']
-        password = serializer.validated_data['password']
-
-        credentials = libs.utils.login_user(request, email, password)
-
-        if credentials is not None:
-            return Response(credentials, status=status.HTTP_200_OK)
-        raise InterviewAPIException(code=status.HTTP_403_FORBIDDEN, detail='Authentication failed') '''
-
-
 class ListCreateEvaluation(generics.GenericAPIView):
     serializer_class = EvaluationSerializer
     permission_classes = (IsAuthenticated,)

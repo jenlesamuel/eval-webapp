@@ -6,5 +6,6 @@ app_name='interview'
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/$', views.login, name='login'),
-    url(r'^retrieve/(?P<id>[1-9]+)/$', views.retrieve, name='retrieve'),
+    url(r'^logout/$', views.logout, name='logout'),
+    url(r'^retrieve/(?P<id>[0-9]+)/$', views.retrieve, name='retrieve'),
 ]

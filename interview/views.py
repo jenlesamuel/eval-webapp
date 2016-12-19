@@ -130,6 +130,16 @@ def retrieve(request, id):
 
     return render(request, "interview/processing_error.html", {"error": error})
 
+def logout(request):
+    try:
+        if request.session["interview"]:
+            del request.session["interview"]
+    except KeyError:
+        pass
+
+    return HttpResponseRedirect(reverse("interview:login"))
+
+
 
 
 
